@@ -1,7 +1,13 @@
-set(HEADER_LIST "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp")
+set(HEADER_LIST 
+  "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
+)
+set(SRC_LIST 
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.cpp" 
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.cpp"
+)
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(correlation correlationMatrixBasic.cpp ${HEADER_LIST})
+add_library(correlation ${SRC_LIST} ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(correlation PUBLIC ../include)

@@ -2,6 +2,7 @@
 
 #include "luaIncludes.hpp"
 #include "correlationMatrixBasic.hpp"
+#include "correlationMatrixILP.hpp"
 
 int main(int argc, char **argv) {
     // Kick up Lua
@@ -10,7 +11,8 @@ int main(int argc, char **argv) {
     luaL_openlibs(L);
 
     // Lua logic
-    lua_register(L, "luaCorrelate", luaCorrelate);
+    lua_register(L, "luaCorrelateBasic", luaCorrelateBasic);
+    lua_register(L, "luaCorrelateILP", luaCorrelateILP);
     luaL_dofile(L, "correlation_driver.lua");
 
     // Cleanup

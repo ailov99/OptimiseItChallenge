@@ -17,7 +17,7 @@ Note: Element at row y and column x is at data[x + y*nx]
 Note: Correlation between rows i and row j is in result[i + j*ny]
 Note: Only locations where 0 <= j <= i < ny are present (avoid redundancy)
 */
-void correlate(
+void correlateBasic(
     const int ny, 
     const int nx, 
     const float *data, 
@@ -57,8 +57,7 @@ void correlate(
 /*
 Lua-callable wrapper
 */
-int luaCorrelate(lua_State *L) {
-    std::cout << "luaCorrelateCalled" << std::endl;
+int luaCorrelateBasic(lua_State *L) {
     // Get params from Lua stack
     const auto ny = lua_tonumber(L, 1);
     const auto nx = lua_tonumber(L, 2);
@@ -85,7 +84,7 @@ int luaCorrelate(lua_State *L) {
 
     // Correlate
     std::vector<float> out_matrix(table_len);
-    correlate(ny,nx,in_matrix.data(),out_matrix.data());
+    correlateBasic(ny,nx,in_matrix.data(),out_matrix.data());
 
     // Push it back onto the stack
     lua_createtable(L, table_len, 0);

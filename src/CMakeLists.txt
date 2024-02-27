@@ -1,5 +1,12 @@
-set(HEADER_LIST "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.hpp")
-set(SRC_LIST "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.cpp")
+set(HEADER_LIST 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.hpp" 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.hpp"
+)
+set(SRC_LIST 
+    "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.cpp" 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.cpp"
+)
 
 add_executable(main ${SRC_LIST} ${HEADER_LIST})
 
