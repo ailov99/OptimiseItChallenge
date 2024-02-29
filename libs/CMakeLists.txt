@@ -2,8 +2,9 @@ set(HEADER_LIST
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
 )
 set(SRC_LIST 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.cpp" 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.cpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.cpp" 
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CBasicMatrixCorrelation.cpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CILPMatrixCorrelation.cpp"
 )
 
 # Make an automatic library - will be static or dynamic based on user setting

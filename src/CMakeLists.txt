@@ -1,11 +1,16 @@
 set(HEADER_LIST 
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.hpp" 
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.hpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/IMatrixCorrelationStrategy.hpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.hpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CBasicMatrixCorrelation.hpp" 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CILPMatrixCorrelation.hpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelatorLuaAdapter.hpp"
 )
 set(SRC_LIST 
     "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" 
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixBasic.cpp" 
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/correlationMatrixILP.cpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.cpp" 
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CBasicMatrixCorrelation.cpp"
+    "${OptimiseItChallenge_SOURCE_DIR}/libs/CILPMatrixCorrelation.cpp"
 )
 
 add_executable(main ${SRC_LIST} ${HEADER_LIST})

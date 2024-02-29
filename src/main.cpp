@@ -1,8 +1,8 @@
 #include <iostream>
 
 #include "luaIncludes.hpp"
-#include "correlationMatrixBasic.hpp"
-#include "correlationMatrixILP.hpp"
+#include "CMatrixCorrelator.hpp"
+#include "MatrixCorrelatorLuaAdapter.hpp"
 
 int main(int argc, char **argv) {
     // Kick up Lua
@@ -10,9 +10,13 @@ int main(int argc, char **argv) {
     L = luaL_newstate();
     luaL_openlibs(L);
 
+    CMatrixCorrelator correlator;
+    *static_cast<CMatrixCorrelator**>(lua_getextraspace(L)) = &correlator;
+
     // Lua logic
-    lua_register(L, "luaCorrelateBasic", luaCorrelateBasic);
-    lua_register(L, "luaCorrelateILP", luaCorrelateILP);
+    lua_register(L, "toCppCorrelateMatrix", &dispatch<&CMatrixCorrelator::fromLuaCorrelateMatrix>);
+    lua_register(L, "toCppSetCorrelationModeBasic", &dispatch<&CMatrixCorrelator::fromLuaSetModeBasic>);
+    lua_register(L, "toCppSetCorrelationModeILP", &dispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
     luaL_dofile(L, "correlation_driver.lua");
 
     // Cleanup

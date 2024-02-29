@@ -12,6 +12,7 @@ end
 
 -- correlate_ilp
 function correlate_ilp()
+    toCppSetCorrelationModeBasic()
     local ny = 4
     local nx = 4
     local data = {
@@ -20,7 +21,7 @@ function correlate_ilp()
         0.45, 0.67, 0.56, 0.11,
         0.76, 0.15, 0.52, 0.17
     }
-    local correlated_table = luaCorrelateILP(nx,ny,data)
+    local correlated_table = toCppCorrelateMatrix(nx,ny,data)
 
     print_matrix(ny,nx,data)
     print("==== ILP Correlated (only top-right calculated): ====")
@@ -29,6 +30,7 @@ end
 
 -- correlate_basic
 function correlate_basic()
+    toCppSetCorrelationModeBasic()
     local ny = 4
     local nx = 4
     local data = {
@@ -37,7 +39,7 @@ function correlate_basic()
         0.45, 0.67, 0.56, 0.11,
         0.76, 0.15, 0.52, 0.17
     }
-    local correlated_table = luaCorrelateBasic(nx,ny,data)
+    local correlated_table = toCppCorrelateMatrix(nx,ny,data)
 
     print_matrix(ny,nx,data)
     print("==== Basic Correlated (only top-right calculated): ====")
