@@ -23,9 +23,11 @@ function correlate_ilp()
     }
     local correlated_table = toCppCorrelateMatrix(nx,ny,data)
 
+    print("==== Input Matrix: ====")
     print_matrix(ny,nx,data)
     print("==== ILP Correlated (only top-right calculated): ====")
     print_matrix(ny,nx,correlated_table)
+    print("")
 end
 
 -- correlate_basic
@@ -41,11 +43,34 @@ function correlate_basic()
     }
     local correlated_table = toCppCorrelateMatrix(nx,ny,data)
 
+    print("==== Input Matrix: ====")
     print_matrix(ny,nx,data)
     print("==== Basic Correlated (only top-right calculated): ====")
     print_matrix(ny,nx,correlated_table)
+    print("")
+end
+
+--correlate_parallel
+function correlate_parallel()
+    toCppSetCorrelationModeParallel()
+    local ny = 4
+    local nx = 4
+    local data = {
+        0.12, 0.14, 0.04, 0.01,
+        0.11, 0.99, 0.95, 0.35,
+        0.45, 0.67, 0.56, 0.11,
+        0.76, 0.15, 0.52, 0.17
+    }
+    local correlated_table = toCppCorrelateMatrix(nx,ny,data)
+
+    print("==== Input Matrix: ====")
+    print_matrix(ny,nx,data)
+    print("==== Parallel Correlated (only top-right calculated): ====")
+    print_matrix(ny,nx,correlated_table)
+    print("")
 end
 
 -- main
 correlate_basic()
 correlate_ilp()
+correlate_parallel()
