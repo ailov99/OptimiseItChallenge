@@ -1,5 +1,10 @@
 set(HEADER_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CBasicMatrixCorrelation.hpp" 
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CILPMatrixCorrelation.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CParallelMatrixCorrelation.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CVectorisedMatrixCorrelation.hpp"
 )
 set(SRC_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.cpp" 
@@ -28,10 +33,3 @@ endif()
 
 # All users of this library will need at least C++17
 target_compile_features(correlation PUBLIC cxx_std_17)
-
-# IDEs should put the headers in a nice place
-source_group(
-  TREE "${OptimiseItChallenge_SOURCE_DIR}/include"
-  PREFIX "Header Files"
-  FILES ${HEADER_LIST}
-)
