@@ -4,6 +4,7 @@
 #include "CBasicMatrixCorrelation.hpp"
 #include "CILPMatrixCorrelation.hpp"
 #include "CParallelMatrixCorrelation.hpp"
+#include "CVectorisedMatrixCorrelation.hpp"
 
 CMatrixCorrelator::CMatrixCorrelator() {
     m_correlation_strat = std::make_unique<CBasicMatrixCorrelation>();
@@ -21,6 +22,11 @@ int CMatrixCorrelator::fromLuaSetModeILP(lua_State *L) {
 
 int CMatrixCorrelator::fromLuaSetModeParallel(lua_State *L) {
     setModeParallel();
+    return 0;
+}
+
+int CMatrixCorrelator::fromLuaSetModeVectorised(lua_State *L) {
+    setModeVectorised();
     return 0;
 }
 
@@ -74,6 +80,10 @@ void CMatrixCorrelator::setModeILP() {
 
 void CMatrixCorrelator::setModeParallel() {
     m_correlation_strat = std::make_unique<CParallelMatrixCorrelation>();
+}
+
+void CMatrixCorrelator::setModeVectorised() {
+    m_correlation_strat = std::make_unique<CVectorisedMatrixCorrelation>();
 }
 
 void CMatrixCorrelator::correlateMatrix(

@@ -46,6 +46,18 @@ function correlate_parallel(ny, nx, in_matrix)
     print("")
 end
 
+--correlate_vectorised
+function correlate_vectorised(ny, nx, in_matrix)
+    toCppSetCorrelationModeVectorised()
+    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+
+    print("==== Input Matrix: ====")
+    print_matrix(ny,nx,in_matrix)
+    print("==== Vectorised Correlated (only top-right calculated): ====")
+    print_matrix(ny,nx,correlated_table)
+    print("")
+end
+
 -- main
 local ny = 4
 local nx = 4
@@ -59,3 +71,4 @@ local in_matrix = {
 correlate_basic(ny, nx, in_matrix)
 correlate_ilp(ny, nx, in_matrix)
 correlate_parallel(ny, nx, in_matrix)
+correlate_vectorised(ny, nx, in_matrix)

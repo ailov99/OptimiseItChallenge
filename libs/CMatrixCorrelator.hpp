@@ -12,6 +12,7 @@ public:
     int fromLuaSetModeBasic(lua_State *L);
     int fromLuaSetModeILP(lua_State *L);
     int fromLuaSetModeParallel(lua_State *L);
+    int fromLuaSetModeVectorised(lua_State *L);
 
 private:
     void correlateMatrix(
@@ -23,6 +24,7 @@ private:
     void setModeBasic();
     void setModeILP();
     void setModeParallel();
+    void setModeVectorised();
 
     std::unique_ptr<IMatrixCorrelationStrategy> m_correlation_strat;
 

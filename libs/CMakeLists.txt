@@ -6,6 +6,7 @@ set(SRC_LIST
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CBasicMatrixCorrelation.cpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CILPMatrixCorrelation.cpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CParallelMatrixCorrelation.cpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CVectorisedMatrixCorrelation.cpp"
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
