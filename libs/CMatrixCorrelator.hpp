@@ -14,6 +14,7 @@ public:
     int fromLuaSetModeParallel(lua_State *L);
     int fromLuaSetModeVectorised(lua_State *L);
     int fromLuaSetModeMaxOptDPrec(lua_State *L);
+    int fromLuaSetModeMaxOptSPrec(lua_State *L);
 
 private:
     void correlateMatrix(
@@ -27,6 +28,7 @@ private:
     void setModeParallel();
     void setModeVectorised();
     void setModeMaxOptDPrec();
+    void setModeMaxOptSPrec();
 
     std::unique_ptr<IMatrixCorrelationStrategy> m_correlation_strat;
 

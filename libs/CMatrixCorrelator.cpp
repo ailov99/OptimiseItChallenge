@@ -6,6 +6,7 @@
 #include "CParallelMatrixCorrelation.hpp"
 #include "CVectorisedMatrixCorrelation.hpp"
 #include "CMaxOptimisedDPrecisionMatrixCorrelation.hpp"
+#include "CMaxOptimisedSPrecisionMatrixCorrelation.hpp"
 
 CMatrixCorrelator::CMatrixCorrelator() {
     m_correlation_strat = std::make_unique<CBasicMatrixCorrelation>();
@@ -33,6 +34,11 @@ int CMatrixCorrelator::fromLuaSetModeVectorised(lua_State *L) {
 
 int CMatrixCorrelator::fromLuaSetModeMaxOptDPrec(lua_State *L) {
     setModeMaxOptDPrec();
+    return 0;
+}
+
+int CMatrixCorrelator::fromLuaSetModeMaxOptSPrec(lua_State *L) {
+    setModeMaxOptSPrec();
     return 0;
 }
 
@@ -94,6 +100,10 @@ void CMatrixCorrelator::setModeVectorised() {
 
 void CMatrixCorrelator::setModeMaxOptDPrec() {
     m_correlation_strat = std::make_unique<CMaxOptimisedDPrecisionMatrixCorrelation>();
+}
+
+void CMatrixCorrelator::setModeMaxOptSPrec() {
+    m_correlation_strat = std::make_unique<CMaxOptimisedSPrecisionMatrixCorrelation>();
 }
 
 void CMatrixCorrelator::correlateMatrix(

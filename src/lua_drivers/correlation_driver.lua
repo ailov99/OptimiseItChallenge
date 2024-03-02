@@ -70,6 +70,18 @@ function correlate_max_opt_double_precision(ny, nx, in_matrix)
     print("")
 end
 
+--correlate_max_opt_single_precision
+function correlate_max_opt_single_precision(ny, nx, in_matrix)
+    toCppSetCorrelationModeMaxOptSPrec()
+    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+
+    print("==== Input Matrix: ====")
+    print_matrix(ny,nx,in_matrix)
+    print("==== Max Optimised Single Precision Correlated (only top-right calculated): ====")
+    print_matrix(ny,nx,correlated_table)
+    print("")
+end
+
 -- main
 local ny = 4
 local nx = 4
@@ -85,3 +97,4 @@ correlate_ilp(ny, nx, in_matrix)
 correlate_parallel(ny, nx, in_matrix)
 correlate_vectorised(ny, nx, in_matrix)
 correlate_max_opt_double_precision(ny, nx, in_matrix)
+correlate_max_opt_single_precision(ny, nx, in_matrix)

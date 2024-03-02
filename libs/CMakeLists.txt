@@ -6,6 +6,7 @@ set(HEADER_LIST
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CParallelMatrixCorrelation.hpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CVectorisedMatrixCorrelation.hpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CMaxOptimisedDPrecisionMatrixCorrelation.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CMaxOptimisedSPrecisionMatrixCorrelation.hpp"
 )
 set(SRC_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CMatrixCorrelator.cpp" 
@@ -14,6 +15,7 @@ set(SRC_LIST
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CParallelMatrixCorrelation.cpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CVectorisedMatrixCorrelation.cpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/CMaxOptimisedDPrecisionMatrixCorrelation.cpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/CMaxOptimisedSPrecisionMatrixCorrelation.cpp"
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
