@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     lua_register(L, "toCppSetCorrelationModeILP", &dispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
     lua_register(L, "toCppSetCorrelationModeParallel", &dispatch<&CMatrixCorrelator::fromLuaSetModeParallel>);
     lua_register(L, "toCppSetCorrelationModeVectorised", &dispatch<&CMatrixCorrelator::fromLuaSetModeVectorised>);
+    lua_register(L, "toCppSetCorrelationModeMaxOptDPrec", &dispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptDPrec>);
     luaL_dofile(L, "correlation_driver.lua");
 
     // Cleanup
