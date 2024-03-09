@@ -28,3 +28,11 @@ add_subdirectory(src)
 # Libraries
 add_subdirectory(libs)
 
+# Set platform
+if(WIN32)
+  set(IS_WIN TRUE)
+elseif(APPLE)
+  set(IS_MAC TRUE)
+elseif(UNIX)
+  set(IS_LINUX TRUE)
+endif()
