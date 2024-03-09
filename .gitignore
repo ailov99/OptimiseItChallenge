@@ -75,3 +75,5 @@ luac.out
 # Custom
 .vscode
 build/
+.DS_Store
+libs/.DS_Store
