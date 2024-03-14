@@ -3,6 +3,8 @@
 #include "luaIncludes.hpp"
 #include "CMatrixCorrelator.hpp"
 #include "MatrixCorrelatorLuaAdapter.hpp"
+#include "CImageSegmenter.hpp"
+#include "ImageSegmenterLuaAdapter.hpp"
 
 int main(int argc, char **argv) {
     // Kick up Lua
@@ -12,15 +14,23 @@ int main(int argc, char **argv) {
 
     CMatrixCorrelator correlator;
     *static_cast<CMatrixCorrelator**>(lua_getextraspace(L)) = &correlator;
+    CImageSegmenter segmenter;
+    *static_cast<CImageSegmenter**>(lua_getextraspace(L)) = &segmenter;
 
-    // Lua logic
-    lua_register(L, "toCppCorrelateMatrix", &dispatch<&CMatrixCorrelator::fromLuaCorrelateMatrix>);
-    lua_register(L, "toCppSetCorrelationModeBasic", &dispatch<&CMatrixCorrelator::fromLuaSetModeBasic>);
-    lua_register(L, "toCppSetCorrelationModeILP", &dispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
-    lua_register(L, "toCppSetCorrelationModeParallel", &dispatch<&CMatrixCorrelator::fromLuaSetModeParallel>);
-    lua_register(L, "toCppSetCorrelationModeVectorised", &dispatch<&CMatrixCorrelator::fromLuaSetModeVectorised>);
-    lua_register(L, "toCppSetCorrelationModeMaxOptDPrec", &dispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptDPrec>);
-    lua_register(L, "toCppSetCorrelationModeMaxOptSPrec", &dispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptSPrec>);
+    // === Lua logic
+    // Matrix correlation
+    lua_register(L, "toCppCorrelateMatrix", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaCorrelateMatrix>);
+    lua_register(L, "toCppSetCorrelationModeBasic", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeBasic>);
+    lua_register(L, "toCppSetCorrelationModeILP", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
+    lua_register(L, "toCppSetCorrelationModeParallel", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeParallel>);
+    lua_register(L, "toCppSetCorrelationModeVectorised", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeVectorised>);
+    lua_register(L, "toCppSetCorrelationModeMaxOptDPrec", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptDPrec>);
+    lua_register(L, "toCppSetCorrelationModeMaxOptSPrec", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptSPrec>);
+    
+    // Image segmentation
+    lua_register(L, "toCppSegmentImage", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
+
+    // Driver
     luaL_dofile(L, "correlation_driver.lua");
 
     // Cleanup

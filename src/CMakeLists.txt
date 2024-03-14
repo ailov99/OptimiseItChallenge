@@ -1,17 +1,21 @@
 set(HEADER_LIST 
-    "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/MatrixCorrelatorLuaAdapter.hpp"
-    "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMatrixCorrelator.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/MatrixCorrelatorLuaAdapter.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/ImageSegmenterLuaAdapter.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMatrixCorrelator.hpp"
+  "${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/CImageSegmenter.hpp"
 )
 set(SRC_LIST 
-    "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" 
+  "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" 
 )
 
 add_executable(main ${SRC_LIST} ${HEADER_LIST})
 
 target_include_directories(main PRIVATE ../libs)
 target_include_directories(main PRIVATE ../libs/MatrixCorrelation)
+target_include_directories(main PRIVATE ../libs/ImageSegmentation)
 
 target_compile_features(main PRIVATE cxx_std_17)
 
 target_link_libraries(main PRIVATE correlation)
+target_link_libraries(main PRIVATE segmentation)
