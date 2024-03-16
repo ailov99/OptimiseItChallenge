@@ -13,7 +13,7 @@ end
 -- correlate_ilp
 function correlate_ilp(ny, nx, in_matrix)
     toCppSetCorrelationModeBasic()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)
@@ -25,7 +25,7 @@ end
 -- correlate_basic
 function correlate_basic(ny, nx, in_matrix)
     toCppSetCorrelationModeBasic()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)
@@ -37,7 +37,7 @@ end
 --correlate_parallel
 function correlate_parallel(ny, nx, in_matrix)
     toCppSetCorrelationModeParallel()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)
@@ -49,7 +49,7 @@ end
 --correlate_vectorised
 function correlate_vectorised(ny, nx, in_matrix)
     toCppSetCorrelationModeVectorised()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)
@@ -61,7 +61,7 @@ end
 --correlate_max_opt_double_precision
 function correlate_max_opt_double_precision(ny, nx, in_matrix)
     toCppSetCorrelationModeMaxOptDPrec()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)
@@ -73,7 +73,7 @@ end
 --correlate_max_opt_single_precision
 function correlate_max_opt_single_precision(ny, nx, in_matrix)
     toCppSetCorrelationModeMaxOptSPrec()
-    local correlated_table = toCppCorrelateMatrix(nx,ny,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
 
     print("==== Input Matrix: ====")
     print_matrix(ny,nx,in_matrix)

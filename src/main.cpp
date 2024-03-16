@@ -29,9 +29,11 @@ int main(int argc, char **argv) {
     
     // Image segmentation
     lua_register(L, "toCppSegmentImage", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
+    lua_register(L, "toCppSetSegmentationModeOptimised", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSetModeOptimised>);
 
-    // Driver
-    luaL_dofile(L, "correlation_driver.lua");
+    // Drivers
+    //luaL_dofile(L, "correlation_driver.lua");
+    luaL_dofile(L, "segmentation_driver.lua");
 
     // Cleanup
     lua_close(L);
