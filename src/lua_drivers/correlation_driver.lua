@@ -1,100 +1,93 @@
--- print out a matrix
-function print_matrix(n_columns, n_rows, data_table)
-    local write = io.write
-    for y=0,n_columns-1,1 do
-        for x=1,n_rows,1 do
-            write(data_table[x + y*n_rows])
-            write' '
-        end
-        write'\n'
-    end
-end
+require("matrix_utils")
 
 -- correlate_ilp
-function correlate_ilp(ny, nx, in_matrix)
-    toCppSetCorrelationModeBasic()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+function correlate_ilp(m)
+    toCppSetCorrelationModeILP()
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== ILP Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 -- correlate_basic
-function correlate_basic(ny, nx, in_matrix)
+function correlate_basic(m)
     toCppSetCorrelationModeBasic()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== Basic Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 --correlate_parallel
-function correlate_parallel(ny, nx, in_matrix)
+function correlate_parallel(m)
     toCppSetCorrelationModeParallel()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== Parallel Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 --correlate_vectorised
-function correlate_vectorised(ny, nx, in_matrix)
+function correlate_vectorised(m)
     toCppSetCorrelationModeVectorised()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== Vectorised Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 --correlate_max_opt_double_precision
-function correlate_max_opt_double_precision(ny, nx, in_matrix)
+function correlate_max_opt_double_precision(m)
     toCppSetCorrelationModeMaxOptDPrec()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== Max Optimised Double Precision Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 --correlate_max_opt_single_precision
-function correlate_max_opt_single_precision(ny, nx, in_matrix)
+function correlate_max_opt_single_precision(m)
     toCppSetCorrelationModeMaxOptSPrec()
-    local correlated_table = toCppCorrelateMatrix(ny,nx,in_matrix)
+    local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
+    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
-    print_matrix(ny,nx,in_matrix)
+    m:print()
     print("==== Max Optimised Single Precision Correlated (only top-right calculated): ====")
-    print_matrix(ny,nx,correlated_table)
+    correlated_matrix:print()
     print("")
 end
 
 -- main
-local ny = 4
-local nx = 4
-local in_matrix = {
-    0.12, 0.14, 0.04, 0.01,
-    0.11, 0.99, 0.95, 0.35,
-    0.45, 0.67, 0.56, 0.11,
-    0.76, 0.15, 0.52, 0.17
-}
+function main()
+    local m = Matrix:new("./test_data/m4x4.txt")
 
-correlate_basic(ny, nx, in_matrix)
-correlate_ilp(ny, nx, in_matrix)
-correlate_parallel(ny, nx, in_matrix)
-correlate_vectorised(ny, nx, in_matrix)
-correlate_max_opt_double_precision(ny, nx, in_matrix)
-correlate_max_opt_single_precision(ny, nx, in_matrix)
+    correlate_basic(m)
+    correlate_ilp(m)
+    correlate_parallel(m)
+    correlate_vectorised(m)
+    correlate_max_opt_double_precision(m)
+    correlate_max_opt_single_precision(m)
+end
+
+main()

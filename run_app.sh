@@ -6,7 +6,7 @@ case "$1" in
         exit 1;;
     "-b")
         cmake --build build
-        cp ./src/lua_drivers/*.lua ./build/src/
+        cp -r ./src/lua_drivers/* ./build/src/
         echo "App built..."
         exit 1;;
     "-c")
