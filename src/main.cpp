@@ -5,6 +5,7 @@
 #include "MatrixCorrelatorLuaAdapter.hpp"
 #include "CImageSegmenter.hpp"
 #include "ImageSegmenterLuaAdapter.hpp"
+#include "ImageUtilities.hpp"
 
 int main(int argc, char **argv) {
     // Kick up Lua
@@ -30,6 +31,10 @@ int main(int argc, char **argv) {
     // Image segmentation
     lua_register(L, "toCppSegmentImage", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
     lua_register(L, "toCppSetSegmentationModeOptimised", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSetModeOptimised>);
+
+    // Utilities
+    lua_register(L, "toCppReadRGBImageFromFile", fromLuaReadRGBImageFromFile);
+    lua_register(L, "toCppWriteRGBImageToFile", fromLuaWriteRGBImageToFile);
 
     // Drivers
     luaL_dofile(L, "correlation_driver.lua");
