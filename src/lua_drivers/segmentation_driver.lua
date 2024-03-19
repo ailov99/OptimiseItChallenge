@@ -17,12 +17,8 @@ function segment_image(n_columns, n_rows, data_table)
     -- TODO: Fix x<->y ordering at the lua-cpp bridge so it's less awkward with indexing
     local seg_upper_left = {image_segmentation[2], image_segmentation[1]}
     local seg_lower_right = {image_segmentation[4], image_segmentation[3]}
-    local seg_inner_colour_rgb = {
-        image_segmentation[5], image_segmentation[6], image_segmentation[7]
-    }
-    local seg_outer_colour_rgb = {
-        image_segmentation[8], image_segmentation[9], image_segmentation[10]
-    }
+    local seg_inner_colour_rgb = image_segmentation[5]
+    local seg_outer_colour_rgb = image_segmentation[6]
 
     print("==== Input Matrix: ====")
     print_matrix(n_columns,n_rows,data_table)

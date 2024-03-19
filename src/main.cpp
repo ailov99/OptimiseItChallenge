@@ -37,8 +37,8 @@ int main(int argc, char **argv) {
     lua_register(L, "toCppWriteRGBImageToFile", fromLuaWriteRGBImageToFile);
 
     // Drivers
-    luaL_dofile(L, "correlation_driver.lua");
-    //luaL_dofile(L, "segmentation_driver.lua");
+    //luaL_dofile(L, "correlation_driver.lua");
+    luaL_dofile(L, "segmentation_driver.lua");
 
     // Cleanup
     lua_close(L);
