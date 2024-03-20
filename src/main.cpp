@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
     // Utilities
     lua_register(L, "toCppReadRGBImageFromFile", fromLuaReadRGBImageFromFile);
     lua_register(L, "toCppWriteRGBImageToFile", fromLuaWriteRGBImageToFile);
+    lua_register(L, "toCppCreateImageFromSegmentationDescription", fromLuaCreateImageFromSegmentationDescription);
 
     // Drivers
     //luaL_dofile(L, "correlation_driver.lua");

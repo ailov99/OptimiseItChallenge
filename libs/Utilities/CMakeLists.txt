@@ -1,6 +1,7 @@
 set(HEADER_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
   "${OptimiseItChallenge_SOURCE_DIR}/include/stb_image.h"
+  "${OptimiseItChallenge_SOURCE_DIR}/include/stb_image_write.h"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/Utilities/ImageUtilities.hpp"
 )
 set(SRC_LIST 
