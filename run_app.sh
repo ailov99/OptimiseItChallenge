@@ -6,7 +6,6 @@ case "$1" in
         exit 1;;
     "-b")
         cmake --build build
-        cp -r ./src/lua_drivers/* ./build/src/
         echo "App built..."
         exit 1;;
     "-c")
@@ -14,9 +13,17 @@ case "$1" in
         echo "Cmake configured..."
         exit 1;;
     "-r")
+        mkdir -p ./build/src && cp -r ./src/lua_drivers/* ./build/src/
         pushd .
         cd ./build/src
-        ./main
+        ./main run
+        popd
+        exit 1;;
+    "-t")
+        mkdir -p ./build/src && cp -r ./src/lua_tests/* ./build/src/
+        pushd .
+        cd ./build/src
+        ./main test
         popd
         exit 1;;
 esac

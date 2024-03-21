@@ -16,7 +16,7 @@ void readRGBImageFromFile(
 ) {
     int real_image_channels;
     data = stbi_load(path.c_str(), &image_width, &image_height, &real_image_channels, STBI_rgb);
-    image_channels = STBI_rgb;
+    image_channels = STBI_rgb; // We get as many channels as requested
 }
 
 int fromLuaReadRGBImageFromFile(lua_State *L) {

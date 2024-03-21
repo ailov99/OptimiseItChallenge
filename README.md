@@ -8,3 +8,4 @@ Launch ./run_app.sh with the following flags:
 - -c (config)
 - -b (build)
 - -r (run)
+- -t (test)
