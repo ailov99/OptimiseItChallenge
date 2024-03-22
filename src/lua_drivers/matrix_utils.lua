@@ -1,11 +1,11 @@
--- Matrix object:
+-- Matrix object
 local Matrix = {
     rows = 0,
     cols = 0,
     data = {}
 }
 
--- Constructor:
+-- Constructor
 function Matrix:new(path)
     local o = {}
     setmetatable(o, self)
@@ -17,19 +17,19 @@ function Matrix:new(path)
     return o
 end
 
--- Setter:
+-- Setter
 function Matrix:set(rows, cols, data)
     self.rows = rows
     self.cols = cols
     self.data = data
 end
 
--- get matrix size
+-- Get matrix size
 function Matrix:size()
     return self.cols*self.rows
 end
 
--- print out a matrix
+-- Print out a matrix
 function Matrix:print()
     local write = io.write
     for y=0,self.cols-1,1 do
@@ -41,14 +41,14 @@ function Matrix:print()
     end
 end
 
--- check if a file exists at path
+-- Check if a file exists at path
 function file_exists(file)
     local f = io.open(file, "rb")
     if f then f:close() end
     return f ~= nil
 end
 
--- load a matrix from file
+-- Load a matrix from file
 function Matrix:loadMatrix(path)
     if not file_exists(path) then return {} end
     local first_line = true
@@ -65,7 +65,7 @@ function Matrix:loadMatrix(path)
     end
 end
 
--- matrix to matrix epsilon equality
+-- Matrix to matrix epsilon equality
 function Matrix:approxEq(m, eps)
     if m.rows ~= self.rows or m.cols ~= self.cols then
         return false

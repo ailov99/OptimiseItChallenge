@@ -21,6 +21,7 @@ case "$1" in
         exit 1;;
     "-t")
         mkdir -p ./build/src && cp -r ./src/lua_drivers/* ./build/src/
+        mkdir -p ./build/src/test_data && cp -r ./src/lua_drivers/test_data/* ./build/src/test_data/
         pushd .
         cd ./build/src
         ./main test
