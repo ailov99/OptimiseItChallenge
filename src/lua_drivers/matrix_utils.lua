@@ -1,6 +1,5 @@
-
 -- Matrix object:
-Matrix = {
+local Matrix = {
     rows = 0,
     cols = 0,
     data = {}
@@ -8,42 +7,38 @@ Matrix = {
 
 -- Constructor:
 function Matrix:new(path)
-    local matrix = {}
-    setmetatable(matrix, self)
+    local o = {}
+    setmetatable(o, self)
     self.__index = self
+    o:set(0, 0, {})
     if path then
-        matrix:load(path)
+        o:loadMatrix(path)
     end
-    return matrix
+    return o
 end
 
--- Clone:
-function Matrix:clone(rows, cols, data)
-    local matrix = {}
-    setmetatable(matrix, self)
-    self.__index = self
-    matrix.rows = rows
-    matrix.cols = cols
-    matrix.data = data
-    return matrix
-end
-
--- generate a random matrix of a given size, where elements are floats between 0 and 1
-function Matrix:getRandomMatrix(rows, cols)
-    local matrix = {}
-    setmetatable(matrix, self)
-    self.__index = self
-    matrix.rows = rows
-    matrix.cols = cols
-    for i=1,rows*cols do
-        matrix.data[#matrix.data+1] = math.random()
-    end
-    return matrix
+-- Setter:
+function Matrix:set(rows, cols, data)
+    self.rows = rows
+    self.cols = cols
+    self.data = data
 end
 
 -- get matrix size
 function Matrix:size()
     return self.cols*self.rows
+end
+
+-- print out a matrix
+function Matrix:print()
+    local write = io.write
+    for y=0,self.cols-1,1 do
+        for x=1,self.rows,1 do
+            write(self.data[x + y*self.rows])
+            write' '
+        end
+        write'\n'
+    end
 end
 
 -- check if a file exists at path
@@ -54,7 +49,7 @@ function file_exists(file)
 end
 
 -- load a matrix from file
-function Matrix:load(path)
+function Matrix:loadMatrix(path)
     if not file_exists(path) then return {} end
     local first_line = true
     for line in io.lines(path) do
@@ -70,18 +65,30 @@ function Matrix:load(path)
     end
 end
 
--- print out a matrix
-function Matrix:print()
-    local write = io.write
-    for y=0,self.cols-1,1 do
-        for x=1,self.rows,1 do
-            write(self.data[x + y*self.rows])
-            write' '
-        end
-        write'\n'
+-- matrix to matrix epsilon equality
+function Matrix:approxEq(m, eps)
+    if m.rows ~= self.rows or m.cols ~= self.cols then
+        return false
     end
+
+    local math = math
+    local eps_diff = 10^(-eps)
+
+    for y=0,m.cols-1,1 do
+        for x=1,m.rows,1 do
+            local data_index = x + y*m.rows
+            local elements_diff = math.abs(m.data[data_index] - self.data[data_index])
+            if elements_diff > eps_diff then
+                print(data_index)
+                print(m.data[data_index])
+                print(self.data[data_index])
+                return false
+            end
+        end
+    end
+
+    return true
 end
 
 
-
-
+return Matrix

@@ -1,10 +1,11 @@
-require("matrix_utils")
+local Matrix = require "matrix_utils"
 
 -- correlate_ilp
 function correlate_ilp(m)
     toCppSetCorrelationModeILP()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()
@@ -17,7 +18,8 @@ end
 function correlate_basic(m)
     toCppSetCorrelationModeBasic()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()
@@ -30,7 +32,8 @@ end
 function correlate_parallel(m)
     toCppSetCorrelationModeParallel()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()
@@ -43,7 +46,8 @@ end
 function correlate_vectorised(m)
     toCppSetCorrelationModeVectorised()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()
@@ -56,7 +60,8 @@ end
 function correlate_max_opt_double_precision(m)
     toCppSetCorrelationModeMaxOptDPrec()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()
@@ -69,7 +74,8 @@ end
 function correlate_max_opt_single_precision(m)
     toCppSetCorrelationModeMaxOptSPrec()
     local correlated_table = toCppCorrelateMatrix(m.rows,m.cols,m.data)
-    local correlated_matrix = Matrix:clone(m.rows, m.cols, correlated_table)
+    local correlated_matrix = Matrix:new()
+    correlated_matrix:set(m.rows, m.cols, correlated_table)
 
     print("==== Input Matrix: ====")
     m:print()

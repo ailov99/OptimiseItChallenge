@@ -20,7 +20,7 @@ case "$1" in
         popd
         exit 1;;
     "-t")
-        mkdir -p ./build/src && cp -r ./src/lua_tests/* ./build/src/
+        mkdir -p ./build/src && cp -r ./src/lua_drivers/* ./build/src/
         pushd .
         cd ./build/src
         ./main test

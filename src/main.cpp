@@ -8,7 +8,7 @@
 #include "ImageUtilities.hpp"
 
 void runTests(lua_State *L) {
-    luaL_dofile(L, "tests/runtests.lua");
+    luaL_dofile(L, "runtests.lua");
 }
 
 void runAll(lua_State *L) {
