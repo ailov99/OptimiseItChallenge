@@ -1,7 +1,5 @@
 set(HEADER_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/include/stb_image.h"
-  "${OptimiseItChallenge_SOURCE_DIR}/include/stb_image_write.h"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/Utilities/ImageUtilities.hpp"
 )
 set(SRC_LIST 
@@ -13,6 +11,8 @@ add_library(utilities ${SRC_LIST} ${HEADER_LIST})
 
 # We need this directory, and users of our library will need it too
 target_include_directories(utilities PUBLIC ../../include)
+# std_image
+target_include_directories(utilities PUBLIC /usr/local/include)
 
 # Find and link Lua
 find_package(Lua 5.4 REQUIRED)
