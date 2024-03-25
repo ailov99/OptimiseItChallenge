@@ -8,6 +8,7 @@ Logic is implemented under /libs while Lua drivers are in /src/lua_drivers. Glue
 - Lua 5.4 (or newer)
 - OpenMP
 - stb_image, stb_image_write
+- luarocks install luasocket
 
 **Note: This project is currently being developed on MacOS and hasn't been throughly tested on other platforms yet.**
 
