@@ -5,7 +5,15 @@ case "$1" in
         echo "No args passed"
         exit 1;;
     "-b")
-        cmake --build build
+        if test -d build; then
+            cmake --build build
+        else
+            mkdir build
+            cd build
+            cmake ..
+            make
+            cd ..
+        fi
         echo "App built..."
         exit 1;;
     "-c")

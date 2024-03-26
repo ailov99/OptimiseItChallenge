@@ -15,6 +15,6 @@ Logic is implemented under /libs while Lua drivers are in /src/lua_drivers. Glue
 # To run:
 Launch ./run_app.sh with the following flags:
 - -c (config)
-- -b (build)
+- -b (build) Note: Always run this first
 - -r (run)
 - -t (test)
