@@ -51,5 +51,5 @@ endif()
 endif()
 find_package(OpenMP)
 
-# All users of this library will need at least C++17
-target_compile_features(correlation PUBLIC cxx_std_17)
+# All users of this library will need at least C++20
+target_compile_features(correlation PUBLIC cxx_std_20)

@@ -10,14 +10,14 @@ case "$1" in
         else
             mkdir build
             cd build
-            cmake ..
+            cmake -GNinja ..
             make
             cd ..
         fi
         echo "App built..."
         exit 1;;
     "-c")
-        cmake -S . -B build
+        cmake -GNinja -S . -B build
         echo "Cmake configured..."
         exit 1;;
     "-r")

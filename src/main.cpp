@@ -3,7 +3,7 @@
 #include "luaIncludes.hpp"
 #include "CMatrixCorrelator.hpp"
 #include "MatrixCorrelatorLuaAdapter.hpp"
-#include "CImageSegmenter.hpp"
+import CImageSegmenter;
 #include "ImageSegmenterLuaAdapter.hpp"
 #include "ImageUtilities.hpp"
 

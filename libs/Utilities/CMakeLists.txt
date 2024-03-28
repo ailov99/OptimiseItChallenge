@@ -19,5 +19,5 @@ find_package(Lua 5.4 REQUIRED)
 target_include_directories(utilities PUBLIC ${LUA_INCLUDE_DIR})
 target_link_libraries(utilities ${LUA_LIBRARIES})
 
-# All users of this library will need at least C++17
-target_compile_features(utilities PUBLIC cxx_std_17)
+# All users of this library will need at least C++20
+target_compile_features(utilities PUBLIC cxx_std_20)

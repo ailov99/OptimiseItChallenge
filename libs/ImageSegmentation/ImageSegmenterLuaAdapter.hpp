@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CImageSegmenter.hpp"
+import CImageSegmenter;
 
 typedef int (CImageSegmenter::*mem_funcc)(lua_State * L);
 

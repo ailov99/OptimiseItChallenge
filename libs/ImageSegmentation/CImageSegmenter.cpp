@@ -1,7 +1,32 @@
+module;
+
 #include <vector>
 #include <iostream>
-#include "CImageSegmenter.hpp"
+#include <memory>
 #include "COptimisedImageSegmentation.hpp"
+#include "IImageSegmentationStrategy.hpp"
+#include "luaIncludes.hpp"
+
+export module CImageSegmenter;
+
+export class CImageSegmenter
+{
+public:
+    CImageSegmenter();
+    int fromLuaSegmentImage(lua_State *L);
+    int fromLuaSetModeOptimised(lua_State *L);
+
+private:
+    SegmentationDescription segment(
+        int ny,
+        int nx,
+        const float *in_data
+    );
+    void setModeOptimised();
+
+    std::unique_ptr<IImageSegmentationStrategy> m_segmentation_strat;
+};
+
 
 CImageSegmenter::CImageSegmenter(){
 }
