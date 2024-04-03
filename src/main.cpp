@@ -5,7 +5,7 @@
 #include "MatrixCorrelatorLuaAdapter.hpp"
 import CImageSegmenter;
 import ImageSegmenterLuaAdapter;
-#include "ImageUtilities.hpp"
+import ImageUtilities;
 
 void runTests(lua_State *L) {
     luaL_dofile(L, "runtests.lua");

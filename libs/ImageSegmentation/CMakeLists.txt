@@ -13,7 +13,8 @@ target_sources(
   FILES 
     CImageSegmenter.cppm
     COptimisedImageSegmentation.cppm
-    IImageSegmentationStrategy.cppm)
+    IImageSegmentationStrategy.cppm
+)
 
 # We need this directory, and users of our library will need it too
 target_include_directories(segmentation PUBLIC ../../include)

@@ -2,7 +2,6 @@ set(HEADER_LIST
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/MatrixCorrelatorLuaAdapter.hpp"
   "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMatrixCorrelator.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/Utilities/ImageUtilities.hpp"
 )
 set(SRC_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/src/main.cpp" 
@@ -17,7 +16,9 @@ target_sources(
   TYPE CXX_MODULES 
   BASE_DIRS "${OptimiseItChallenge_SOURCE_DIR}"
   FILES 
-    ${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/ImageSegmenterLuaAdapter.cppm)
+    ${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/ImageSegmenterLuaAdapter.cppm
+    ${OptimiseItChallenge_SOURCE_DIR}/libs/Utilities/ImageUtilities.cppm    
+)
 
 target_include_directories(main PRIVATE ../libs)
 target_include_directories(main PRIVATE ../libs/MatrixCorrelation)
