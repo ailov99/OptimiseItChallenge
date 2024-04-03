@@ -4,7 +4,7 @@
 #include "CMatrixCorrelator.hpp"
 #include "MatrixCorrelatorLuaAdapter.hpp"
 import CImageSegmenter;
-#include "ImageSegmenterLuaAdapter.hpp"
+import ImageSegmenterLuaAdapter;
 #include "ImageUtilities.hpp"
 
 void runTests(lua_State *L) {
@@ -37,8 +37,8 @@ lua_State* luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) {
     lua_register(L, "toCppSetCorrelationModeMaxOptSPrec", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptSPrec>);
     
     // Image segmentation
-    lua_register(L, "toCppSegmentImage", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
-    lua_register(L, "toCppSetSegmentationModeOptimised", &imageSegmenterDispatch<&CImageSegmenter::fromLuaSetModeOptimised>);
+    lua_register(L, "toCppSegmentImage", &ImageSegmenterAdapter::imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
+    lua_register(L, "toCppSetSegmentationModeOptimised", &ImageSegmenterAdapter::imageSegmenterDispatch<&CImageSegmenter::fromLuaSetModeOptimised>);
 
     // Utilities
     lua_register(L, "toCppReadRGBImageFromFile", fromLuaReadRGBImageFromFile);

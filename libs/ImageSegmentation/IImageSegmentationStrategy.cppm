@@ -1,6 +1,8 @@
-#pragma once
+module;
 
-struct SegmentationDescription {
+export module IImageSegmentationStrategy;
+
+export struct SegmentationDescription {
     int y0;
     int x0;
     int y1;
@@ -9,13 +11,13 @@ struct SegmentationDescription {
     float inner[3];
 };
 
-class IImageSegmentationStrategy
+export class IImageSegmentationStrategy
 {
 public:
     virtual ~IImageSegmentationStrategy() = default;
-    virtual SegmentationDescription segment(
+    virtual auto segment(
         int ny,
         int nx,
         const float *in_data
-    ) = 0;
+    ) -> SegmentationDescription = 0;
 };

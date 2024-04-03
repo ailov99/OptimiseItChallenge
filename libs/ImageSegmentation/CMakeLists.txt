@@ -1,18 +1,19 @@
 set(HEADER_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/COptimisedImageSegmentation.hpp"
-)
-set(SRC_LIST 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/ImageSegmentation/COptimisedImageSegmentation.cpp"
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(segmentation ${SRC_LIST} ${HEADER_LIST})
+add_library(segmentation ${HEADER_LIST})
 
-target_sources(segmentation 
+target_sources(
+  segmentation 
   PUBLIC 
-    FILE_SET cxx_modules TYPE CXX_MODULES FILES 
-      CImageSegmenter.cpp)
+  FILE_SET cxx_modules 
+  TYPE CXX_MODULES 
+  FILES 
+    CImageSegmenter.cppm
+    COptimisedImageSegmentation.cppm
+    IImageSegmentationStrategy.cppm)
 
 # We need this directory, and users of our library will need it too
 target_include_directories(segmentation PUBLIC ../../include)
