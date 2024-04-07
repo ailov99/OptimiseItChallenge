@@ -19,9 +19,9 @@ public:
 
 private:
     auto segment(
-        int ny,
-        int nx,
-        const float *in_data
+        const int ny,
+        const int nx,
+        const float* const in_data
     ) -> SegmentationDescription;
     auto setModeOptimised() -> void;
 
@@ -102,9 +102,9 @@ auto CImageSegmenter::fromLuaSegmentImage(lua_State *L) -> int {
 }
 
 auto CImageSegmenter::segment(
-    int ny,
-    int nx,
-    const float *in_data
+    const int ny,
+    const int nx,
+    const float* const in_data
 ) -> SegmentationDescription {
     return m_segmentation_strat->segment(
         ny, nx, in_data

@@ -1,23 +1,23 @@
 #include <iostream>
 
 #include "luaIncludes.hpp"
-#include "CMatrixCorrelator.hpp"
-#include "MatrixCorrelatorLuaAdapter.hpp"
+import CMatrixCorrelator;
+import MatrixCorrelatorLuaAdapter;
 import CImageSegmenter;
 import ImageSegmenterLuaAdapter;
 import ImageUtilities;
 
-void runTests(lua_State *L) {
+auto runTests(lua_State *L) -> void {
     luaL_dofile(L, "runtests.lua");
 }
 
-void runAll(lua_State *L) {
+auto runAll(lua_State *L) -> void {
     // Drivers
     luaL_dofile(L, "correlation_driver.lua");
     luaL_dofile(L, "segmentation_driver.lua");
 }
 
-lua_State* luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) {
+auto luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) -> lua_State* {
     // Kick up Lua
     lua_State *L;
     L = luaL_newstate();
@@ -28,13 +28,13 @@ lua_State* luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) {
 
     // === Lua <-> Cpp function map
     // Matrix correlation
-    lua_register(L, "toCppCorrelateMatrix", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaCorrelateMatrix>);
-    lua_register(L, "toCppSetCorrelationModeBasic", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeBasic>);
-    lua_register(L, "toCppSetCorrelationModeILP", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
-    lua_register(L, "toCppSetCorrelationModeParallel", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeParallel>);
-    lua_register(L, "toCppSetCorrelationModeVectorised", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeVectorised>);
-    lua_register(L, "toCppSetCorrelationModeMaxOptDPrec", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptDPrec>);
-    lua_register(L, "toCppSetCorrelationModeMaxOptSPrec", &matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptSPrec>);
+    lua_register(L, "toCppCorrelateMatrix", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaCorrelateMatrix>);
+    lua_register(L, "toCppSetCorrelationModeBasic", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeBasic>);
+    lua_register(L, "toCppSetCorrelationModeILP", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeILP>);
+    lua_register(L, "toCppSetCorrelationModeParallel", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeParallel>);
+    lua_register(L, "toCppSetCorrelationModeVectorised", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeVectorised>);
+    lua_register(L, "toCppSetCorrelationModeMaxOptDPrec", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptDPrec>);
+    lua_register(L, "toCppSetCorrelationModeMaxOptSPrec", &MatrixCorrelatorAdapter::matrixCorrelatorDispatch<&CMatrixCorrelator::fromLuaSetModeMaxOptSPrec>);
     
     // Image segmentation
     lua_register(L, "toCppSegmentImage", &ImageSegmenterAdapter::imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
@@ -48,7 +48,7 @@ lua_State* luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) {
     return L;
 }
 
-void luaTearDown(lua_State *L) {
+auto luaTearDown(lua_State *L) -> void {
     // Cleanup
     lua_close(L);
 }

@@ -5,7 +5,7 @@ import IImageSegmentationStrategy;
 
 export module COptimisedImageSegmentation;
 
-namespace VectorisedUtils {
+namespace ImageSegmentationVectorisedUtils {
     typedef double double4_t __attribute__ ((vector_size (4 * sizeof(double))));
     inline auto sum_double4_t(double4_t v) -> double {
         return (v[0]+v[1]+v[2]+v[3]);
@@ -16,9 +16,9 @@ export class COptimisedImageSegmentation : public IImageSegmentationStrategy {
 public:
     COptimisedImageSegmentation();
     auto segment(
-        int ny,
-        int nx,
-        const float *in_data
+        const int ny,
+        const int nx,
+        const float* const in_data
     ) -> SegmentationDescription override;
 };
 
@@ -44,11 +44,11 @@ A colour component is stored at `data[c + 3*x + 3*nx*y]` where `c` is 0 for R, 1
 A structure describing the location of the monochromatic triangle and colour components of both the background and rectangle
 */
 auto COptimisedImageSegmentation::segment(
-    int ny,
-    int nx,
-    const float *in_data
+    const int ny,
+    const int nx,
+    const float* const in_data
 ) -> SegmentationDescription {
-    using namespace VectorisedUtils;
+    using namespace ImageSegmentationVectorisedUtils;
 
     SegmentationDescription result{0,0,0,0,{0.f,0.f,0.f},{0.f,0.f,0.f}};
     constexpr double4_t zeros{0.,0.,0.,0.};

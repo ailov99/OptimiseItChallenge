@@ -11,6 +11,7 @@ target_sources(
   FILE_SET cxx_modules 
   TYPE CXX_MODULES 
   FILES 
+    ImageSegmenterLuaAdapter.cppm
     CImageSegmenter.cppm
     COptimisedImageSegmentation.cppm
     IImageSegmentationStrategy.cppm

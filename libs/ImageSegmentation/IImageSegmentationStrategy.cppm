@@ -16,8 +16,8 @@ export class IImageSegmentationStrategy
 public:
     virtual ~IImageSegmentationStrategy() = default;
     virtual auto segment(
-        int ny,
-        int nx,
-        const float *in_data
+        const int ny,
+        const int nx,
+        const float* const in_data
     ) -> SegmentationDescription = 0;
 };
