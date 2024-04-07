@@ -1,11 +1,26 @@
-#include "COptimisedImageSegmentation.hpp"
-#include <vector>
+module;
 
-#define V_SIZE 4
-typedef double double4_t __attribute__ ((vector_size (4 * sizeof(double))));
-inline double sum_double4_t(double4_t v) {
-    return (v[0]+v[1]+v[2]+v[3]);
+#include <vector>
+import IImageSegmentationStrategy;
+
+export module COptimisedImageSegmentation;
+
+namespace ImageSegmentationVectorisedUtils {
+    typedef double double4_t __attribute__ ((vector_size (4 * sizeof(double))));
+    inline auto sum_double4_t(double4_t v) -> double {
+        return (v[0]+v[1]+v[2]+v[3]);
+    }
 }
+
+export class COptimisedImageSegmentation : public IImageSegmentationStrategy {
+public:
+    COptimisedImageSegmentation();
+    auto segment(
+        const int ny,
+        const int nx,
+        const float* const in_data
+    ) -> SegmentationDescription override;
+};
 
 COptimisedImageSegmentation::COptimisedImageSegmentation() {
 }
@@ -28,13 +43,15 @@ A colour component is stored at `data[c + 3*x + 3*nx*y]` where `c` is 0 for R, 1
 @return
 A structure describing the location of the monochromatic triangle and colour components of both the background and rectangle
 */
-SegmentationDescription COptimisedImageSegmentation::segment(
-    int ny,
-    int nx,
-    const float *in_data
-) {
+auto COptimisedImageSegmentation::segment(
+    const int ny,
+    const int nx,
+    const float* const in_data
+) -> SegmentationDescription {
+    using namespace ImageSegmentationVectorisedUtils;
+
     SegmentationDescription result{0,0,0,0,{0.f,0.f,0.f},{0.f,0.f,0.f}};
-    constexpr double4_t zeros = {0.,0.,0.,0.};
+    constexpr double4_t zeros{0.,0.,0.,0.};
     std::vector<double4_t> data_v(nx*ny, zeros);
     
     // Input data to vectorised form (each pixel has its own vector containing RGB)
@@ -56,43 +73,44 @@ SegmentationDescription COptimisedImageSegmentation::segment(
         }
     }
 
-    const auto p_sum = sum_lookup[nx + (nx+1)*ny];
+    const auto p_sum{sum_lookup[nx + (nx+1)*ny]};
     struct win_dims {
         int top_left_x;
         int top_left_y;
         int bot_right_x;
         int bot_right_y;
     };
-    auto overall_max = 0.;
+    auto overall_max{0.};
 
     // Now multithread again
     #pragma omp parallel
     {
-        win_dims this_win_dims = {0,0,0,0};
-        auto this_max = 0.;
+        win_dims this_win_dims{0,0,0,0};
+        auto this_max{0.};
         
         for (auto this_height = 1; this_height <= ny; this_height++) {
             #pragma omp for schedule(dynamic)
             for (auto this_width = 1; this_width <= nx; this_width++) {
-                const auto x = this_height*this_width;
-                const auto y = nx*ny - x;
-                const auto x_d = 1./x;
-                const auto y_d = 1./y;
+                const auto x{this_height*this_width};
+                const auto y{nx*ny - x};
+                const auto x_d{1./x};
+                const auto y_d{1./y};
 
                 for (auto y0 = 0; y0 <= ny-this_height; y0++) {
                     for (auto x0 = 0; x0 <= nx-this_width; x0++) {
-                        const auto y1 = y0 + this_height;
-                        const auto x1 = x0 + this_width;
+                        const auto y1{y0 + this_height};
+                        const auto x1{x0 + this_width};
 
-                        const auto x_v = 
-                                sum_lookup[x1 + (nx + 1) * y1] - 
-                                sum_lookup[x0 + (nx + 1) * y1] - 
-                                sum_lookup[x1 + (nx + 1) * y0] + 
-                                sum_lookup[x0 + (nx + 1) * y0];
+                        const auto x_v{ 
+                            sum_lookup[x1 + (nx + 1) * y1] - 
+                            sum_lookup[x0 + (nx + 1) * y1] - 
+                            sum_lookup[x1 + (nx + 1) * y0] + 
+                            sum_lookup[x0 + (nx + 1) * y0]
+                        };
 
-                        const auto y_v = p_sum - x_v;
-                        const auto h_x_y = x_v * x_v * x_d + y_v * y_v * y_d;
-                        const auto current_max = sum_double4_t(h_x_y);
+                        const auto y_v{p_sum - x_v};
+                        const auto h_x_y{x_v * x_v * x_d + y_v * y_v * y_d};
+                        const auto current_max{sum_double4_t(h_x_y)};
 
                         if (current_max > this_max) {
                             this_max = current_max;
@@ -117,15 +135,16 @@ SegmentationDescription COptimisedImageSegmentation::segment(
     }
 
     // Compute the end result dims
-    auto x_v = 
+    auto x_v{
         sum_lookup[result.x1 + (nx + 1) * result.y1] - 
         sum_lookup[result.x0 + (nx + 1) * result.y1] - 
         sum_lookup[result.x1 + (nx + 1) * result.y0] + 
-        sum_lookup[result.x0 + (nx + 1) * result.y0];
-    auto y_v = p_sum - x_v;
+        sum_lookup[result.x0 + (nx + 1) * result.y0]
+    };
+    auto y_v{p_sum - x_v};
 
-    const auto x = (result.y1 - result.y0) * (result.x1 - result.x0);
-    const auto y = ny*nx - x;
+    const auto x{(result.y1 - result.y0) * (result.x1 - result.x0)};
+    const auto y{ny*nx - x};
 
     x_v /= x;
     y_v /= y;

@@ -1,25 +1,26 @@
 set(HEADER_LIST 
   "${OptimiseItChallenge_SOURCE_DIR}/include/luaIncludes.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMatrixCorrelator.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CBasicMatrixCorrelation.hpp" 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CILPMatrixCorrelation.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CParallelMatrixCorrelation.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CVectorisedMatrixCorrelation.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMaxOptimisedDPrecisionMatrixCorrelation.hpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMaxOptimisedSPrecisionMatrixCorrelation.hpp"
-)
-set(SRC_LIST 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMatrixCorrelator.cpp" 
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CBasicMatrixCorrelation.cpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CILPMatrixCorrelation.cpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CParallelMatrixCorrelation.cpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CVectorisedMatrixCorrelation.cpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMaxOptimisedDPrecisionMatrixCorrelation.cpp"
-  "${OptimiseItChallenge_SOURCE_DIR}/libs/MatrixCorrelation/CMaxOptimisedSPrecisionMatrixCorrelation.cpp"
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(correlation ${SRC_LIST} ${HEADER_LIST})
+add_library(correlation ${HEADER_LIST})
+
+target_sources(
+  correlation 
+  PUBLIC 
+  FILE_SET cxx_modules 
+  TYPE CXX_MODULES 
+  FILES 
+    MatrixCorrelatorLuaAdapter.cppm
+    IMatrixCorrelationStrategy.cppm
+    CMatrixCorrelator.cppm
+    CBasicMatrixCorrelation.cppm
+    CILPMatrixCorrelation.cppm
+    CParallelMatrixCorrelation.cppm
+    CVectorisedMatrixCorrelation.cppm
+    CMaxOptimisedDPrecisionMatrixCorrelation.cppm
+    CMaxOptimisedSPrecisionMatrixCorrelation.cppm
+)
 
 # We need this directory, and users of our library will need it too
 target_include_directories(correlation PUBLIC ../../include)
@@ -51,5 +52,5 @@ endif()
 endif()
 find_package(OpenMP)
 
-# All users of this library will need at least C++17
-target_compile_features(correlation PUBLIC cxx_std_17)
+# All users of this library will need at least C++20
+target_compile_features(correlation PUBLIC cxx_std_20)

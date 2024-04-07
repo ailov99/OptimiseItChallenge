@@ -1,21 +1,29 @@
+module;
+
+import IMatrixCorrelationStrategy;
 #include <vector>
 #include <cmath>
-#include "CMaxOptimisedDPrecisionMatrixCorrelation.hpp"
 
-#define V_SIZE 8
-#define BLOCK_DIM 60
+export module CMaxOptimisedDPrecisionMatrixCorrelation;
 
-#if V_SIZE == 8
-typedef double double8_t __attribute__ ((vector_size (8 * sizeof(double))));
-inline double sum_double8_t(double8_t v) {
-    return (v[0]+v[1]+v[2]+v[3]+v[4]+v[5]+v[6]+v[7]);
+export class CMaxOptimisedDPrecisionMatrixCorrelation : public IMatrixCorrelationStrategy {
+public:
+    CMaxOptimisedDPrecisionMatrixCorrelation();
+    auto correlate(
+        const int ny,
+        const int nx,
+        const float* const data,
+        float *result
+    ) -> void override;   
+};
+
+namespace DPrecisionMatrixCorrelationUtils {
+    typedef double double8_t __attribute__ ((vector_size (8 * sizeof(double))));
+    inline auto sum_double8_t(double8_t v) -> double {
+        return (v[0]+v[1]+v[2]+v[3]+v[4]+v[5]+v[6]+v[7]);
+    }
 }
-#else
-typedef double double4_t __attribute__ ((vector_size (4 * sizeof(double))));
-inline double sum_double4_t(double4_t v) {
-    return (v[0]+v[1]+v[2]+v[3]);
-}
-#endif
+
 
 CMaxOptimisedDPrecisionMatrixCorrelation::CMaxOptimisedDPrecisionMatrixCorrelation(){
 }
@@ -36,39 +44,35 @@ Note: Element at row y and column x is at data[x + y*nx]
 Note: Correlation between rows i and row j is in result[i + j*ny]
 Note: Only locations where 0 <= j <= i < ny are present (avoid redundancy)
 */
-void CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
-    int ny,
-    int nx,
-    float *data,
+auto CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
+    const int ny,
+    const int nx,
+    const float* const data,
     float *result
-){
+) -> void {
+    using namespace DPrecisionMatrixCorrelationUtils;
+    constexpr auto V_SIZE {8};
+    constexpr auto BLOCK_DIM {60};
+
     // Params
-    const auto vectors_per_row = (nx + V_SIZE - 1) / V_SIZE;
-    const auto n_row = (vectors_per_row + BLOCK_DIM - 1) / BLOCK_DIM;
-    const auto n_col = (ny + BLOCK_DIM - 1) / BLOCK_DIM;
-    const auto final_x = n_row * BLOCK_DIM;
-    const auto final_y = n_col * BLOCK_DIM;
-    const auto nonpad_vectors_per_row = (vectors_per_row - (nx % V_SIZE != 0 ? 1 : 0));
-    const auto pad_vectors_per_row = nx % V_SIZE;
-#if V_SIZE == 8
-    constexpr double8_t zeros = {0.,0.,0.,0.,0.,0.,0.,0.};
-#else
-    constexpr double4_t zeros = {0.,0.,0.,0.};
-#endif
+    const auto vectors_per_row {(nx + V_SIZE - 1) / V_SIZE};
+    const auto n_row {(vectors_per_row + BLOCK_DIM - 1) / BLOCK_DIM};
+    const auto n_col {(ny + BLOCK_DIM - 1) / BLOCK_DIM};
+    const auto final_x {n_row * BLOCK_DIM};
+    const auto final_y {n_col * BLOCK_DIM};
+    const auto nonpad_vectors_per_row {(vectors_per_row - (nx % V_SIZE != 0 ? 1 : 0))};
+    const auto pad_vectors_per_row {nx % V_SIZE};
+    constexpr double8_t zeros {0.,0.,0.,0.,0.,0.,0.,0.};
 
     // Data working copy
-#if V_SIZE == 8
     std::vector<double8_t> data_v(final_x*final_y, zeros);
-#else
-    std::vector<double4_t> data_v(final_x*final_y, zeros);
-#endif
 
     // Populate working copy from input buffer
     #pragma omp parallel for collapse(2)
     for (auto y = 0; y < ny; y++) {
         for (auto x = 0; x < final_x; x++) {
 		    for (auto k = 0; k < V_SIZE; k++) {
-                const auto v_index = k + x*V_SIZE;
+                const auto v_index {k + x*V_SIZE};
                 if (v_index < nx)
                     data_v[x + final_x*y][k] = data[y*nx + v_index];
                 else
@@ -80,24 +84,17 @@ void CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
     // Norm to 0
     #pragma omp parallel for
     for (auto y = 0; y < ny; y++) {
-#if V_SIZE == 8
         std::vector<double8_t> block_sum(BLOCK_DIM, zeros);
-#else
-        std::vector<double4_t> block_sum(BLOCK_DIM, zeros);
-#endif
+
         for (auto i = 0; i < vectors_per_row; i+=BLOCK_DIM)
             for (auto j = 0; j < BLOCK_DIM; j++)
                 block_sum[j] += data_v[i + j + final_x*y];
 
-        auto row_sum_v = zeros;
+        auto row_sum_v {zeros};
         for (auto i = 0; i < BLOCK_DIM; i++)
             row_sum_v += block_sum[i];
 
-#if V_SIZE == 8
-        const auto row_mean = sum_double8_t(row_sum_v) / nx;
-#else
-        const auto row_mean = sum_double4_t(row_sum_v) / nx;
-#endif
+        const auto row_mean {sum_double8_t(row_sum_v) / nx};
 
         for (auto i = 0; i < nonpad_vectors_per_row; i++)
             data_v[i + final_x*y] -= row_mean;
@@ -108,23 +105,17 @@ void CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
     // Norm to 1
     #pragma omp parallel for
     for (auto y = 0; y < ny; y++) {
-#if V_SIZE == 8
         std::vector<double8_t> block_denoms(BLOCK_DIM, zeros);
-#else
-        std::vector<double4_t> block_denoms(BLOCK_DIM, zeros);
-#endif
+
         for (auto i = 0; i < vectors_per_row; i+=BLOCK_DIM)
             for (auto j = 0; j < BLOCK_DIM; j++)
                 block_denoms[j] += data_v[i + j + y*final_x] * data_v[i + j + y*final_x];
 
-        auto row_denom_v = zeros;
+        auto row_denom_v {zeros};
         for (auto i = 0; i < BLOCK_DIM; i++)
             row_denom_v += block_denoms[i];
-#if V_SIZE == 8
-        const auto row_denom = std::sqrt(sum_double8_t(row_denom_v));
-#else
-        const auto row_denom = std::sqrt(sum_double4_t(row_denom_v));
-#endif
+
+        const auto row_denom {std::sqrt(sum_double8_t(row_denom_v))};
 
         for (auto i = 0; i < nonpad_vectors_per_row; i++)
             data_v[i + final_x*y] /= row_denom;
@@ -142,11 +133,7 @@ void CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
         {
             #pragma omp for schedule(static, 1) nowait
 	        for (auto y = 0; y < final_y; y += BLOCK_DIM) {
-#if V_SIZE == 8
                 std::vector<double8_t> block(BLOCK_DIM*BLOCK_DIM, zeros);
-#else
-                std::vector<double4_t> block(BLOCK_DIM*BLOCK_DIM, zeros);
-#endif
 
 	            for (auto i = 0; i < BLOCK_DIM; i++) {
 		            for (auto j = 0; j < BLOCK_DIM; j++)
@@ -154,15 +141,12 @@ void CMaxOptimisedDPrecisionMatrixCorrelation::correlate(
                 }
 
 	            for (auto x = y; x < final_y; x += BLOCK_DIM) {
-#if V_SIZE == 8
                     std::vector<double8_t> mid_block(BLOCK_DIM*BLOCK_DIM, zeros);
-#else
-                    std::vector<double4_t> mid_block(BLOCK_DIM*BLOCK_DIM, zeros);
-#endif
+
                     for (auto mid_block_row = 0; mid_block_row < BLOCK_DIM; mid_block_row++) {
                         for (auto mid_block_col = 0; mid_block_col < BLOCK_DIM; mid_block_col++) {
                             for (auto i = 0; i < BLOCK_DIM; i++)
-                                mid_block[mid_block_col + mid_block_row*BLOCK_DIM] += block[i + mid_block_row*BLOCK_DIM] * data_v[i + step + (mid_block_col+x)*final_x]; // TODO: indexing mess
+                                mid_block[mid_block_col + mid_block_row*BLOCK_DIM] += block[i + mid_block_row*BLOCK_DIM] * data_v[i + step + (mid_block_col+x)*final_x];
                         }
                     }
 

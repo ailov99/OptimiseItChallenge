@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.29)
 
 project(
   OptimiseItChallenge
@@ -17,6 +17,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 endif()
+
+set(CMAKE_CXX_STANDARD 20)
 
 # FetchContent added in CMake 3.11, downloads during the configure step
 # FetchContent_MakeAvailable was added in CMake 3.14; simpler usage
