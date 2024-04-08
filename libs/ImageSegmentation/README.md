@@ -8,7 +8,7 @@ This library contains implementations of the above using various optimisation te
 ## Interface
 The segmentation function signature is as follows:
 
-`SegmentationDescription segment(int ny, int nx, const float* data)`
+`SegmentationDescription segment(const int ny, const int nx, const float* const data)`
 
 `struct SegmentationDescription {int y0; int x0; int y1; int x1; float outer[3]; float inner[3]; }`
 

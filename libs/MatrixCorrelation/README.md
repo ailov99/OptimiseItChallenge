@@ -6,7 +6,7 @@ This library contains implementations of the above using varios optimisation tec
 ## Interface
 The correlation function signature is as follows:
 
-`void correlate(int ny, int nx, const float* data, float* result)`
+`void correlate(const int ny, const int nx, const float* const data, float* result)`
 
 Where:
 * `data` is a pointer to the input matrix, with `ny` rows and `nx` columns
