@@ -1,5 +1,7 @@
 # OptimiseItChallenge
-This is personal effort to optimise various algorithms as much as possible using various techniques (in C++, using Lua as glue)
+This is personal effort to optimise various algorithms as much as possible using various techniques (in C++, using Lua as glue). 
+
+A lot of the library code was written as part of a Master's course in parallel programming that I took years ago. I am now looking to improve it and have it tested (while also learning Lua).
 
 Logic is implemented under /libs while Lua drivers are in /src/lua_drivers. Glued together in /src/main.cpp.
 
