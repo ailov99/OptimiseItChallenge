@@ -5,6 +5,8 @@ import CMatrixCorrelator;
 import MatrixCorrelatorLuaAdapter;
 import CImageSegmenter;
 import ImageSegmenterLuaAdapter;
+import CParallelSorter;
+import ParallelSorterLuaAdapter;
 import ImageUtilities;
 
 auto runTests(lua_State *L) -> void {
@@ -13,11 +15,12 @@ auto runTests(lua_State *L) -> void {
 
 auto runAll(lua_State *L) -> void {
     // Drivers
-    luaL_dofile(L, "correlation_driver.lua");
-    luaL_dofile(L, "segmentation_driver.lua");
+    //luaL_dofile(L, "correlation_driver.lua");
+    //luaL_dofile(L, "segmentation_driver.lua");
+    luaL_dofile(L, "sorting_driver.lua");
 }
 
-auto luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) -> lua_State* {
+auto luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter, CParallelSorter& sorter) -> lua_State* {
     // Kick up Lua
     lua_State *L;
     L = luaL_newstate();
@@ -25,6 +28,7 @@ auto luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) -> lua_
 
     *static_cast<CMatrixCorrelator**>(lua_getextraspace(L)) = &correlator;
     *static_cast<CImageSegmenter**>(lua_getextraspace(L)) = &segmenter;
+    *static_cast<CParallelSorter**>(lua_getextraspace(L)) = &sorter;
 
     // === Lua <-> Cpp function map
     // Matrix correlation
@@ -39,6 +43,10 @@ auto luaSetup(CMatrixCorrelator& correlator, CImageSegmenter& segmenter) -> lua_
     // Image segmentation
     lua_register(L, "toCppSegmentImage", &ImageSegmenterAdapter::imageSegmenterDispatch<&CImageSegmenter::fromLuaSegmentImage>);
     lua_register(L, "toCppSetSegmentationModeOptimised", &ImageSegmenterAdapter::imageSegmenterDispatch<&CImageSegmenter::fromLuaSetModeOptimised>);
+
+    // Parallel sorting
+    lua_register(L, "toCppMergeSortInt", &ParallelSorterAdapter::parallelSorterDispatch<&CParallelSorter::fromLuaMergeSort<int>>);
+    lua_register(L, "toCppMergeSortDouble", &ParallelSorterAdapter::parallelSorterDispatch<&CParallelSorter::fromLuaMergeSort<double>>);
 
     // Utilities
     lua_register(L, "toCppReadRGBImageFromFile", fromLuaReadRGBImageFromFile);
@@ -56,7 +64,8 @@ auto luaTearDown(lua_State *L) -> void {
 int main(int argc, char **argv) {
     CMatrixCorrelator correlator;
     CImageSegmenter segmenter;
-    auto *luaState = luaSetup(correlator, segmenter);
+    CParallelSorter sorter;
+    auto *luaState = luaSetup(correlator, segmenter, sorter);
 
     const std::string cmd_op = argv[1];
     if (argc == 2) {

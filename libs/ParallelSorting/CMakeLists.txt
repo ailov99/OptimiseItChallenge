@@ -3,36 +3,29 @@ set(HEADER_LIST
 )
 
 # Make an automatic library - will be static or dynamic based on user setting
-add_library(correlation ${HEADER_LIST})
+add_library(sorting ${HEADER_LIST})
 
 target_sources(
-  correlation 
+  sorting 
   PUBLIC 
   FILE_SET cxx_modules 
   TYPE CXX_MODULES 
   FILES 
-    MatrixCorrelatorLuaAdapter.cppm
-    IMatrixCorrelationStrategy.cppm
-    CMatrixCorrelator.cppm
-    CBasicMatrixCorrelation.cppm
-    CILPMatrixCorrelation.cppm
-    CParallelMatrixCorrelation.cppm
-    CVectorisedMatrixCorrelation.cppm
-    CMaxOptimisedDPrecisionMatrixCorrelation.cppm
-    CMaxOptimisedSPrecisionMatrixCorrelation.cppm
+    CParallelSorter.cppm
+    ParallelSorterLuaAdapter.cppm
 )
 
 # We need this directory, and users of our library will need it too
-target_include_directories(correlation PUBLIC ../../include)
+target_include_directories(sorting PUBLIC ../../include)
 
 # Find and link Lua
 find_package(Lua 5.4 REQUIRED)
-target_include_directories(correlation PUBLIC ${LUA_INCLUDE_DIR})
-target_link_libraries(correlation ${LUA_LIBRARIES})
+target_include_directories(sorting PUBLIC ${LUA_INCLUDE_DIR})
+target_link_libraries(sorting ${LUA_LIBRARIES})
 
+find_package(OpenMP REQUIRED)
 # Find and link OpenMP
 # Note: On a Mac, the default Xcode clang does not support OMP, so we need the logic below
-find_package(OpenMP)
 if(APPLE)
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     set(OpenMP_C "${CMAKE_C_COMPILER}" CACHE STRING "" FORCE)
@@ -51,7 +44,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(OpenMP_libiomp5_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
 endif()
 endif()
-target_link_libraries(correlation ${OpenMP_CXX_FLAGS})
+target_link_libraries(sorting ${OpenMP_CXX_FLAGS})
 
 # All users of this library will need at least C++20
-target_compile_features(correlation PUBLIC cxx_std_20)
+target_compile_features(sorting PUBLIC cxx_std_20)

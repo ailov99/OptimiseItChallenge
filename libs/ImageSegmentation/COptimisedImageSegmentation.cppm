@@ -12,7 +12,8 @@ namespace ImageSegmentationVectorisedUtils {
     }
 }
 
-export class COptimisedImageSegmentation : public IImageSegmentationStrategy {
+export class COptimisedImageSegmentation : public IImageSegmentationStrategy 
+{
 public:
     COptimisedImageSegmentation();
     auto segment(

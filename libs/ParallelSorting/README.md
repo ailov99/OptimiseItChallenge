@@ -4,7 +4,7 @@ This library contains implementations of various parallel sorting algorithms (us
 ## Interface
 The sort function signature is as follows:
 
-`void sort(long long *data, const in data_len)`
+`void sort(T *data, const in data_len)`
 
 Where:
 * `data` is a pre-allocated array of numbers. This will be sorted in-place

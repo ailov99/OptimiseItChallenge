@@ -27,6 +27,7 @@ target_link_libraries(segmentation ${LUA_LIBRARIES})
 
 # Find and link OpenMP
 # Note: On a Mac, the default Xcode clang does not support OMP, so we need the logic below
+find_package(OpenMP)
 if(APPLE)
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     set(OpenMP_C "${CMAKE_C_COMPILER}" CACHE STRING "" FORCE)
@@ -45,7 +46,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(OpenMP_libiomp5_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
 endif()
 endif()
-find_package(OpenMP)
+target_link_libraries(segmentation ${OpenMP_CXX_FLAGS})
 
 # All users of this library will need at least C++20
 target_compile_features(segmentation PUBLIC cxx_std_20)
