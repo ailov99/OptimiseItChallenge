@@ -21,7 +21,7 @@ target_include_directories(sorting PUBLIC ../../include)
 # Find and link Lua
 find_package(Lua 5.4 REQUIRED)
 target_include_directories(sorting PUBLIC ${LUA_INCLUDE_DIR})
-target_link_libraries(sorting ${LUA_LIBRARIES})
+target_link_libraries(sorting PRIVATE ${LUA_LIBRARIES})
 
 find_package(OpenMP REQUIRED)
 # Find and link OpenMP
@@ -44,7 +44,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(OpenMP_libiomp5_LIBRARY ${OpenMP_CXX_LIB_NAMES} CACHE STRING "" FORCE)
 endif()
 endif()
-target_link_libraries(sorting ${OpenMP_CXX_FLAGS})
+target_link_libraries(sorting PRIVATE ${OpenMP_CXX_FLAGS})
 
 # All users of this library will need at least C++20
 target_compile_features(sorting PUBLIC cxx_std_20)

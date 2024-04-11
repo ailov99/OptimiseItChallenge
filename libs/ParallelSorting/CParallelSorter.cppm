@@ -36,7 +36,6 @@ CParallelSorter::CParallelSorter() {
 
 template <Sortable T>
 auto CParallelSorter::fromLuaMergeSort(lua_State *L) -> int {
-    std::cout << "--FromLuaPArallelSort--" << std::endl;
     // Get data length
     const auto data_len {lua_tonumber(L, 1)};
 
@@ -45,7 +44,7 @@ auto CParallelSorter::fromLuaMergeSort(lua_State *L) -> int {
     lua_settop(L, 2);
     const auto table_len {lua_rawlen(L, 2)};
     std::vector<T> in_data(table_len);
-    std::cout << table_len << std::endl;
+
     for (auto i = 0; i < table_len; i++) {
         lua_pushinteger(L, i+1);
         lua_gettable(L, -2);
@@ -62,7 +61,6 @@ auto CParallelSorter::fromLuaMergeSort(lua_State *L) -> int {
 
     // Sort
     mergeSort(in_data.data(), data_len);
-    std::cout<<"MErge sorted" << std::endl;
 
     // Push sorted data back onto stack
     lua_createtable(L, table_len, 0);
@@ -80,7 +78,7 @@ auto CParallelSorter::mergeSort(Sortable auto *data, const int data_len) -> void
     auto pow_of_two {1};
     while (n_threads > pow_of_two)
         pow_of_two <<= 1;
-    n_threads = pow_of_two;
+    n_threads = pow_of_two >> 1;
 
     // Check if worth doing this multi-threaded
     if (n_threads == 1) {
